@@ -1,4 +1,5 @@
-# Pandox - *Pando*c E*x*tensions
+# Pandox
+## A collection of PANDOc eXtensions
 
 **Pandox** is a small collection of utilities that extend [John MacFarlane's Pandoc](http://johnmacfarlane.net/pandoc/), the "universal document converter".
 
