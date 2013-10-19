@@ -1,0 +1,25 @@
+{
+  "name": "pandox",
+  "description": "Rod's Pandoc Extensions",
+  "version": "0.0.1",
+  "private": "false",
+   "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {
+    "optimist": "latest",
+    "JSONStream": "latest",
+    "traverse": "latest",
+    "exec-sync": "latest"
+  },
+  "devDependencies": {
+    "coffee-script":  "latest",
+    "docco": "latest",
+    "jscoverage": "latest", "expresso": "latest",
+    "mocha": "latest",
+    "should": "latest"
+  },
+  "engines": {
+    "node": ">= 0.10.3"
+  }
+}
