@@ -10,7 +10,8 @@
     "optimist": "latest",
     "JSONStream": "latest",
     "traverse": "latest",
-    "exec-sync": "latest"
+    "execSync": "latest",
+    "temp": "latest"
   },
   "devDependencies": {
     "coffee-script":  "latest",
