@@ -16,6 +16,14 @@ pandoc -t json README.md | coffee lib/up-caser.coffee | pandoc -f json -t html
 
 will generate an HTML version of the `README.md` file, first applying the filter defined in `up-caser`.
 
+The npm module includes directly executable scripts for each extension.  Hence:
+
+```console
+pandoc -t json README.md | pandox-up-caser | pandoc -f json -t html
+```
+
+also works (following `npm install -g pandox`).
+
 #### The API (Code-Level) Interface
 
 *Pandox* processes the JSON-format abstact-syntax tree that *pandoc* can generate when given the `-t json` flag. Internally, this is quite similiar to (but not *exactly* the same as) the [*Pandoc* filters API](http://johnmacfarlane.net/pandoc/scripting.html) that exists for Haskell and Python.

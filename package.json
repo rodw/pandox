@@ -10,6 +10,11 @@
   "bugs": { "url": "http://github.com/rodw/pandox/issues" },
   "private": "false",
   "main": "lib/index.js",
+  "bin": {
+    "pandox-up-caser": "./bin/pandox-up-caser",
+    "pandox-string-combiner": "./bin/pandox-string-combiner",
+    "pandox-code-block-processor": "./bin/pandox-code-block-processor"
+  },
   "scripts": { "test": "make test" },
   "dependencies": {
     "traverse": "latest",

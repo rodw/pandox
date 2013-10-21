@@ -114,6 +114,7 @@ module: build test docs coverage
 	mkdir -p $(MODULE_DIR)
 	cp README.* $(MODULE_DIR)
 	cp license.* $(MODULE_DIR)
+	cp -r bin $(MODULE_DIR)
 	cp -r docs $(MODULE_DIR)
 	cp -r lib $(MODULE_DIR)
 	cp -r test $(MODULE_DIR)
@@ -121,7 +122,10 @@ module: build test docs coverage
 	cp Makefile $(MODULE_DIR)
 
 test-module-install: clean-test-module-install js test docs coverage module
-	mkdir ../testing-module-install; cd ../testing-module-install; npm install "$(CURDIR)/module"; node -e "require('assert').ok(require('pandox').PandocFilter !== null); console.log('It worked!');" && cd $(CURDIR) # && rm -r $(RM_DASH_I) ../testing-module-install
+	mkdir ../testing-module-install
+	cd ../testing-module-install
+	npm install "$(CURDIR)/module"
+	node -e "require('assert').ok(require('pandox').PandocFilter !== null);" && (echo "It worked!" | pandoc -t json | pandox-up-caser | pandoc -f json -t html | grep "<p>IT WORKED!</p>") && cd $(CURDIR) # && rm -r $(RM_DASH_I) ../testing-module-install
 
 $(NODE_MODULES): $(PACKAGE_JSON)
 	$(NPM_EXE) prune
