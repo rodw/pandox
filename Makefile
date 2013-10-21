@@ -112,8 +112,8 @@ really-clean-node-modules: # deletes rather that simply pruning node_modules
 # NPM TARGETS
 module: build test docs coverage
 	mkdir -p $(MODULE_DIR)
-	cp README.* $(MODULE_DIR)
-	cp license.* $(MODULE_DIR)
+	cp README.md $(MODULE_DIR)
+	cp license.txt $(MODULE_DIR)
 	cp -r bin $(MODULE_DIR)
 	cp -r docs $(MODULE_DIR)
 	cp -r lib $(MODULE_DIR)
