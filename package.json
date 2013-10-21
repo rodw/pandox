@@ -8,7 +8,6 @@
   "contributors": [ ],
   "repository": {"type":"git", "url":"https://github.com/rodw/pandox.git" },
   "bugs": { "url": "http://github.com/rodw/pandox/issues" },
-  "private": "false",
   "main": "lib/index.js",
   "bin": {
     "pandox-up-caser": "./bin/pandox-up-caser",
