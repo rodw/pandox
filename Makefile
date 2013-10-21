@@ -113,20 +113,15 @@ really-clean-node-modules: # deletes rather that simply pruning node_modules
 module: build test docs coverage
 	mkdir -p $(MODULE_DIR)
 	cp README.* $(MODULE_DIR)
-	cp -r amqp $(MODULE_DIR)
-	cp -r bin $(MODULE_DIR)
-	cp -r client-lib $(MODULE_DIR)
-	cp -r config $(MODULE_DIR)
-	cp -r demo $(MODULE_DIR)
+	cp license.* $(MODULE_DIR)
 	cp -r docs $(MODULE_DIR)
 	cp -r lib $(MODULE_DIR)
-	cp -r sql $(MODULE_DIR)
 	cp -r test $(MODULE_DIR)
 	cp $(PACKAGE_JSON) $(MODULE_DIR)
 	cp Makefile $(MODULE_DIR)
 
 test-module-install: clean-test-module-install js test docs coverage module
-	mkdir ../testing-module-install; cd ../testing-module-install; npm install "$(CURDIR)/module"; node -e "require('assert').ok(require('XXXX').XXXX !== null); console.log('It worked!');" && cd $(CURDIR) # && rm -r $(RM_DASH_I) ../testing-module-install
+	mkdir ../testing-module-install; cd ../testing-module-install; npm install "$(CURDIR)/module"; node -e "require('assert').ok(require('pandox').PandocFilter !== null); console.log('It worked!');" && cd $(CURDIR) # && rm -r $(RM_DASH_I) ../testing-module-install
 
 $(NODE_MODULES): $(PACKAGE_JSON)
 	$(NPM_EXE) prune
@@ -186,29 +181,3 @@ docco: $(COFFEE_SRCS) $(NODE_MODULES)
 	docco $(COFFEE_SRCS)
 	mv docs docs-temporarily-renamed-so-docco-doesnt-clobber-it/docco
 	mv docs-temporarily-renamed-so-docco-doesnt-clobber-it docs
-
-################################################################################
-# UGLIFY TARGETS
-# .SUFFIXES: .min.js .js
-# .js.min.js:
-# 	$(UGLIFY_EXE) $(UGLIFY_ARGS) --output $@ $<
-# $(MIN_JS_OBJ): $(CLIENT_JS_SRCS)
-# minify-client-js: $(MIN_JS)
-# client-js: minify-client-js
-
-
-PACKAGE_VERSION ?= $(shell $(NODE_EXE) -e "console.log(require('./$(PACKAGE_JSON)').version)")
-PACKAGE_NAME ?= $(shell $(NODE_EXE) -e "console.log(require('./$(PACKAGE_JSON)').name)")
-TMP_PACKAGE_DIR ?= packaging-$(PACKAGE_NAME)-$(PACKAGE_VERSION)-tmp
-PACKAGE_DIR ?= $(PACKAGE_NAME)-$(PACKAGE_VERSION)
-
-targetx:
-
-#	@echo "$(PACKAGE_VERSION)"
-#	@echo "$(PACKAGE_NAME)"
-#	@echo "$(TMP_PACKAGE_DIR)"
-#	@echo "$(PACKAGE_DIR)"
-
-
-# deployable: npm js test
-# 	mkdir "../$(TMP_PACKAGE_DIR)" && cd "../$(TMP_PACKAGE_DIR)" && cp -r ../web "$(PACKAGE_DIR)" && cd "$(PACKAGE_DIR)" && ln -s $(RM_DASH_I) config/config-prod.json config.json && cd .. && tar -czf "$(PACKAGE_DIR).tgz" "$(PACKAGE_DIR)" && mv "$(PACKAGE_DIR).tgz" ../web/. && cd .. && rm -r $(RM_DASH_I) "$(TMP_PACKAGE_DIR)" && cd web

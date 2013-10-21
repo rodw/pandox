@@ -1,0 +1,10 @@
+exports                    = exports ? this
+fs                         = require 'fs'
+path                       = require 'path'
+HOMEDIR                    = path.join(__dirname,'..')
+LIB_COV                    = path.join(HOMEDIR,'lib-cov')
+LIB_DIR                    = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'lib')
+exports.PandocFilter       = require(path.join(LIB_DIR,'pandoc-filter')).PandocFilter
+exports.CodeBlockProcessor = require(path.join(LIB_DIR,'code-block-processor')).CodeBlockProcessor
+exports.StringCombiner     = require(path.join(LIB_DIR,'string-combiner')).StringCombiner
+exports.UpCaser            = require(path.join(LIB_DIR,'up-caser')).UpCaser

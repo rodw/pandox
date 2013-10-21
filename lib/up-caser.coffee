@@ -1,4 +1,3 @@
-should       = require 'should'
 fs           = require 'fs'
 path         = require 'path'
 HOMEDIR      = path.join(__dirname,'..')

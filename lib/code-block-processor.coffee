@@ -1,4 +1,3 @@
-should       = require 'should'
 fs           = require 'fs'
 path         = require 'path'
 HOMEDIR      = path.join(__dirname,'..')
@@ -6,8 +5,8 @@ LIB_COV      = path.join(HOMEDIR,'lib-cov')
 LIB_DIR      = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'lib')
 PandocFilter = require(path.join(LIB_DIR,'pandoc-filter')).PandocFilter
 ExecSync     = require('execSync')
-temp         = require('temp')
-isWindows    = require('os').platform().indexOf('win') is 0
+temp         = require('temp'); temp.track()
+IS_WINDOWS   = require('os').platform().indexOf('win') is 0
 
 class CodeBlockProcessor extends PandocFilter
 
@@ -16,16 +15,14 @@ class CodeBlockProcessor extends PandocFilter
     fs.writeFileSync(temp_file,data)
     return temp_file
 
-  remove_temp_file:(filename)=>fs.unlink(filename)
-
   exec_with_stdin: (stdin,cmd)=>
     tmpfile = @write_to_temp_file(stdin)
-    if isWindows
+    if IS_WINDOWS
       cmd = "type #{tmpfile} | #{cmd}"
     else
       cmd = "cat #{tmpfile} | #{cmd}"
     result = ExecSync.exec(cmd)
-    @remove_temp_file(tmpfile)
+    temp.cleanup()
     return result
 
   pairs_to_map: (pairs)=>
