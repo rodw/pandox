@@ -34,5 +34,15 @@ class PandocFilter
     @chained = filter
     return this
 
+  main:()=>
+    data = []
+    process.stdin.resume()
+    process.stdin.setEncoding('utf8')
+    process.stdin.on 'data', (chunk)=>data.push(chunk)
+    process.stdin.on 'end', ()=>
+      json = JSON.parse(data.join(''))
+      result = @execute(json)
+      console.log JSON.stringify(result)
+
 exports = exports ? this
 exports.PandocFilter = PandocFilter

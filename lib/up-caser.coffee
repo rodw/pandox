@@ -14,3 +14,6 @@ class UpCaser extends PandocFilter
 
 exports = exports ? this
 exports.UpCaser = UpCaser
+
+if require.main is module
+  (new UpCaser()).main()

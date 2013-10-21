@@ -33,3 +33,6 @@ class StringCombiner extends PandocFilter
 
 exports = exports ? this
 exports.StringCombiner = StringCombiner
+
+if require.main is module
+  (new StringCombiner()).main()

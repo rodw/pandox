@@ -65,3 +65,6 @@ class CodeBlockProcessor extends PandocFilter
 
 exports = exports ? this
 exports.CodeBlockProcessor = CodeBlockProcessor
+
+if require.main is module
+  (new CodeBlockProcessor()).main()
