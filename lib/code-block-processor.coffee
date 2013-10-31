@@ -31,34 +31,44 @@ class CodeBlockProcessor extends PandocFilter
       map[pair[0]] = pair[1]
     return map
 
+  map_to_pairs: (map)=>
+    pairs = []
+    for n,v of map
+      pairs[n] = v
+    return pairs
+
   visit: (key,value)=>
-    if value?.CodeBlock?
-      nvps = @pairs_to_map(value.CodeBlock[0][2])
+    DELETE_THESE = [ 'input-file', 'input-cmd', 'exec', 'output-file', 'output-cmd', 'display' ]
+    if value?.t is 'CodeBlock'
+      nvps = @pairs_to_map(value.c[0][2])
       # given an input-file or input-cmd, replace the body of the code block
       if nvps['input-file']?
-        value.CodeBlock[1] = fs.readFileSync(nvps['input-file']).toString()
+        value.c[1] = fs.readFileSync(nvps['input-file']).toString()
       else if nvps['input-cmd']?
         result = ExecSync.exec(nvps['input-cmd'])
         unless result?.code is 0
           console.error("WARNING: Error occurred running command \"#{nvps['input-cmd']}\".",result)
         else
-          value.CodeBlock[1] = result.stdout
+          value.c[1] = result.stdout
       # given exec=true, execute the body of the code block
       if nvps['exec']? and nvps['exec'].toUpperCase() in ['TRUE','T','YES','Y',1,'1','ON']
-        result = ExecSync.exec(value.CodeBlock[1])
+        result = ExecSync.exec(value.c[1])
         unless result?.code is 0
-          console.error("WARNING: Error occurred running command \"#{value.CodeBlock[1]}\".",result)
+          console.error("WARNING: Error occurred running command \"#{value.c[1]}\".",result)
       # given an output-file or output-cmd, export the body of the code block
       if nvps['output-file']?
-        fs.writeFileSync(nvps['output-file'],value.CodeBlock[1])
+        fs.writeFileSync(nvps['output-file'],value.c[1])
       else if nvps['output-cmd']?
-        result = @exec_with_stdin(value.CodeBlock[1],nvps['output-cmd'])
+        result = @exec_with_stdin(value.c[1],nvps['output-cmd'])
         unless result?.code is 0
           console.error("WARNING: Error occurred running command \"#{nvps['output-cmd']}\".",result)
       # given display=none, hide the code block after processing
       if nvps['display']? and nvps['display'].toUpperCase() in ['NONE','HIDDEN','HIDE','NO','N','FALSE','F',0,'0','OFF']
         return null
       else
+        for key in DELETE_THESE
+          delete nvps[key]
+        value.c[0][2] = @map_to_pairs(nvps)
         return value
     else
       return value

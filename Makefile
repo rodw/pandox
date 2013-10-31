@@ -32,8 +32,10 @@ LIB ?= lib
 MOCHA_COV_ARGS  ?= -R html-cov --compilers coffee:coffee-script --globals "_\$$jscoverage"
 
 # MARKDOWN #####################################################################
-MARKDOWN_SRCS ?= $(shell find . -type f -name '*.md' | grep -v node_modules | grep -v module)
+MARKDOWN_SRCS ?= $(shell find . -type f -name '*.md' | grep -v node_modules | grep -v module | grep -v test/data)
 MARKDOWN_HTML ?= ${MARKDOWN_SRCS:.md=.html}
+MARKDOWN_TEST_SRCS ?=  $(shell find test/data -type f -name '*.md')
+MARKDOWN_JSON ?= ${MARKDOWN_TEST_SRCS:.md=.json}
 MARKDOWN_PROCESSOR ?= pandoc
 MARKDOWN_STYLESHEET ?= docs/styles/markdown.css
 MARKDOWN_PROCESSOR_ARGS ?= -f markdown -t html -s -H $(MARKDOWN_STYLESHEET) --toc --highlight-style pygments
@@ -90,6 +92,7 @@ clean-js:
 
 clean-markdown:
 	rm $(RM_DASH_I) $(MARKDOWN_HTML)
+	rm $(RM_DASH_I) $(MARKDOWN_JSON)
 
 clean-module:
 	rm -r $(RM_DASH_I) $(MODULE_DIR)
@@ -151,7 +154,14 @@ build: js
 ################################################################################
 # TEST TARGETS
 
-test: $(COFFEE_SRCS) $(COFFEE_TEST_SRCS) $(MOCHA_TESTS) $(NODE_MODULES)
+
+.SUFFIXES: .json .md
+.md.json:
+	$(MARKDOWN_PROCESSOR) -t json -o $@ $<
+
+$(MARKDOWN_JSON_OBJ): $(MARKDOWN_TEST_SRCS)
+
+test: $(NODE_MODULES) $(MARKDOWN_JSON) $(COFFEE_SRCS) $(COFFEE_TEST_SRCS) $(MOCHA_TESTS)
 	$(MOCHA_EXE) $(MOCHA_TEST_ARGS) $(MOCHA_TESTS)
 
 coverage: js

@@ -4,6 +4,7 @@ lib-cov
 *.js
 node_modules
 module
+test/data/*.json
 
 # GENERAL
 #---------------------------------------------------------------------

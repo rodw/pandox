@@ -14,12 +14,12 @@ class StringCombiner extends PandocFilter
       new_array = []
       current = null
       for elt in value
-        if elt.Str?
-          current ?=  { Str:"" }
-          current.Str += elt.Str
-        else if elt is 'Space'
-          current ?=  { Str:"" }
-          current.Str += " "
+        if elt.t is 'Str'
+          current ?=  { 't':'Str', 'c':'' }
+          current.c += elt.c
+        else if elt.t is 'Space'
+          current ?=  { 't':'Str', 'c':'' }
+          current.c += ' '
         else
           if current?
             new_array.push current

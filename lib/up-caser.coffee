@@ -6,11 +6,11 @@ LIB_DIR      = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'li
 PandocFilter = require(path.join(LIB_DIR,'pandoc-filter')).PandocFilter
 
 class UpCaser extends PandocFilter
-  visit:(key,value)=>
-    if key is 'Str'
-      return value.toUpperCase()
-    else
-      return value
+  visit:(type,content)=>
+    if content.t is 'Str'
+      content.c = content.c.toUpperCase()
+    return content
+
 
 exports = exports ? this
 exports.UpCaser = UpCaser
