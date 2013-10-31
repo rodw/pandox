@@ -8,11 +8,11 @@ StringCombiner = require(path.join(LIB_DIR,'string-combiner')).StringCombiner
 UpCaser        = require(path.join(LIB_DIR,'up-caser')).UpCaser
 
 DATA_DIR       = path.join(HOMEDIR,'test','data')
-SIMPLE_MD_JSON = require( path.join(DATA_DIR,'simple.json') )
 
 describe 'StringCombiner',->
 
   it 'can be used combine strings', (done)->
+    SIMPLE_MD_JSON = require( path.join(DATA_DIR,'simple.json') )
     filter = new StringCombiner()
     result = filter.execute(SIMPLE_MD_JSON)
     found = JSON.stringify(result)
@@ -21,6 +21,7 @@ describe 'StringCombiner',->
     done()
 
   it 'can be chained with upcaser', (done)->
+    SIMPLE_MD_JSON = require( path.join(DATA_DIR,'simple.json') )
     filter = (new UpCaser()).chain(new StringCombiner())
     result = filter.execute(SIMPLE_MD_JSON)
     found = JSON.stringify(result)

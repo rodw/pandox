@@ -9,7 +9,7 @@ class StringCombiner extends PandocFilter
   constructor:()->
     super(null,'map')
 
-  visit:(key,value)=>
+  visit:(context,value)=>
     if Array.isArray(value)
       new_array = []
       current = null

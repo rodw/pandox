@@ -17,16 +17,16 @@ class PandocFilter
       node = @chained.execute(node)
     visit = @visit
     node = traverse(node)[method] (value)->
-      result = visit(this.key,value,this)
+      result = visit(this,value)
       if result?
         this.update(result)
       else
         this.remove(true)
     return node
 
-  visit:(key,value,context)=>
+  visit:(context,value)=>
     if @action?
-      return @action(key,value,context)
+      return @action(context,value)
     else
       return value
 

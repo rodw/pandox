@@ -37,7 +37,7 @@ class CodeBlockProcessor extends PandocFilter
       pairs[n] = v
     return pairs
 
-  visit: (key,value)=>
+  visit: (context,value)=>
     DELETE_THESE = [ 'input-file', 'input-cmd', 'exec', 'output-file', 'output-cmd', 'display' ]
     if value?.t is 'CodeBlock'
       nvps = @pairs_to_map(value.c[0][2])
