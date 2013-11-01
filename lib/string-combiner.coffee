@@ -6,30 +6,31 @@ LIB_DIR      = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'li
 PandocFilter = require(path.join(LIB_DIR,'pandoc-filter')).PandocFilter
 
 class StringCombiner extends PandocFilter
-  constructor:()->
-    super(null,'map')
-
-  visit:(context,value)=>
-    if Array.isArray(value)
+  action:(type,content,format,meta)=>
+    if Array.isArray(content)
       new_array = []
       current = null
-      for elt in value
-        if elt.t is 'Str'
+      for elt in content
+        if elt?.t is 'Str'
           current ?=  { 't':'Str', 'c':'' }
           current.c += elt.c
-        else if elt.t is 'Space'
+        else if elt?.t is 'Space'
           current ?=  { 't':'Str', 'c':'' }
           current.c += ' '
         else
+          if Array.isArray(elt)
+            result = @action(null,elt,format,meta)
+            if result?.c?
+              elt = result.c
           if current?
             new_array.push current
             current = null
           new_array.push elt
       if current?
         new_array.push current
-      return new_array
+      return { t:type, c:new_array }
     else
-      return value
+      return null
 
 exports = exports ? this
 exports.StringCombiner = StringCombiner

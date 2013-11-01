@@ -37,41 +37,41 @@ class CodeBlockProcessor extends PandocFilter
       pairs[n] = v
     return pairs
 
-  visit: (context,value)=>
+  action:(type,content,format,meta)=>
     DELETE_THESE = [ 'input-file', 'input-cmd', 'exec', 'output-file', 'output-cmd', 'display' ]
-    if value?.t is 'CodeBlock'
-      nvps = @pairs_to_map(value.c[0][2])
+    if type is 'CodeBlock'
+      nvps = @pairs_to_map(content[0][2])
       # given an input-file or input-cmd, replace the body of the code block
       if nvps['input-file']?
-        value.c[1] = fs.readFileSync(nvps['input-file']).toString()
+        content[1] = fs.readFileSync(nvps['input-file']).toString()
       else if nvps['input-cmd']?
         result = ExecSync.exec(nvps['input-cmd'])
         unless result?.code is 0
           console.error("WARNING: Error occurred running command \"#{nvps['input-cmd']}\".",result)
         else
-          value.c[1] = result.stdout
+          content[1] = result.stdout
       # given exec=true, execute the body of the code block
       if nvps['exec']? and nvps['exec'].toUpperCase() in ['TRUE','T','YES','Y',1,'1','ON']
-        result = ExecSync.exec(value.c[1])
+        result = ExecSync.exec(content[1])
         unless result?.code is 0
-          console.error("WARNING: Error occurred running command \"#{value.c[1]}\".",result)
+          console.error("WARNING: Error occurred running command \"#{content[1]}\".",result)
       # given an output-file or output-cmd, export the body of the code block
       if nvps['output-file']?
-        fs.writeFileSync(nvps['output-file'],value.c[1])
+        fs.writeFileSync(nvps['output-file'],content[1])
       else if nvps['output-cmd']?
-        result = @exec_with_stdin(value.c[1],nvps['output-cmd'])
+        result = @exec_with_stdin(content[1],nvps['output-cmd'])
         unless result?.code is 0
           console.error("WARNING: Error occurred running command \"#{nvps['output-cmd']}\".",result)
       # given display=none, hide the code block after processing
       if nvps['display']? and nvps['display'].toUpperCase() in ['NONE','HIDDEN','HIDE','NO','N','FALSE','F',0,'0','OFF']
-        return null
+        return []
       else
         for key in DELETE_THESE
           delete nvps[key]
-        value.c[0][2] = @map_to_pairs(nvps)
-        return value
+        content[0][2] = @map_to_pairs(nvps)
+        return { t:type, c:content }
     else
-      return value
+      return null
 
 exports = exports ? this
 exports.CodeBlockProcessor = CodeBlockProcessor

@@ -18,13 +18,25 @@ describe 'StringCombiner',->
     found = JSON.stringify(result)
     /Simple Markdown Example/.test(found).should.be.ok
     /This is a simple example of/.test(found).should.be.ok
+    /Numbered Lists/.test(found).should.be.ok
     done()
 
   it 'can be chained with upcaser', (done)->
     SIMPLE_MD_JSON = require( path.join(DATA_DIR,'simple.json') )
-    filter = (new UpCaser()).chain(new StringCombiner())
+    filter = (new StringCombiner()).chain(new UpCaser())
     result = filter.execute(SIMPLE_MD_JSON)
     found = JSON.stringify(result)
     /SIMPLE MARKDOWN EXAMPLE/.test(found).should.be.ok
     /THIS IS A SIMPLE EXAMPLE OF/.test(found).should.be.ok
+    /NUMBERED LISTS/.test(found).should.be.ok
+    done()
+
+  it 'operates on meta-data too', (done)->
+    SIMPLE_MD_JSON = require( path.join(DATA_DIR,'simple-with-meta.json') )
+    filter = new StringCombiner()
+    result = filter.execute(SIMPLE_MD_JSON)
+    found = JSON.stringify(result)
+    /Rod Waldhoff/.test(found).should.be.ok
+    /31 October 2013/.test(found).should.be.ok
+    /An Example with Meta-Data/.test(found).should.be.ok
     done()
