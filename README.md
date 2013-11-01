@@ -72,7 +72,7 @@ The `UpCaser` filter is a trivial extension primarily intended to serve as an ex
 
 It will convert any string values to upper case, but ignores code blocks, urls, and other special cases.
 
-Usage exmample:
+Usage example:
 
 ```console
 > pandoc -t json README.md | pandox-up-caser | pandoc -f json -t html
@@ -96,7 +96,7 @@ The `StringCombiner` filter will collapse these sequences of strings and spaces 
 [ { t:'Str',c:'Hello World. } ]
 ```
 
-Usage exmample:
+Usage example:
 
 ```console
 > pandoc -t json MY-FILE.md | pandox-string-combiner | pandoc -f json -t html
@@ -136,7 +136,7 @@ where:
 
   * `output-cmd` - pipes the body of the code block to the specified command.
 
-Usage exmample:
+Usage example:
 
 ```console
 > pandoc -t json MY-FILE.md | pandox-code-block-processor | pandoc -f json -t html
