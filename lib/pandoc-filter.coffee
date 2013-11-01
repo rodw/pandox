@@ -99,6 +99,9 @@ class PandocFilter
   init_argv:()=>
     @argv = optimist.options(@options).usage('Usage: $0 [OPTIONS] [FILE]').argv
 
+  is_true_string:(value)->value? and value.toUpperCase() in ['TRUE','T','YES','Y',1,'1','ON']
+  is_false_string:(value)->value? and value.toUpperCase() in ['NONE','HIDDEN','HIDE','NO','N','FALSE','F',0,'0','OFF']
+
   on_help:()->
     console.log("")
     optimist.showHelp()

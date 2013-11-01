@@ -101,7 +101,7 @@ class CodeBlockProcessor extends PandocFilter
         else
           content[1] = result.stdout
       # given exec=true, execute the body of the code block
-      if nvps['exec']? and nvps['exec'].toUpperCase() in ['TRUE','T','YES','Y',1,'1','ON']
+      if @is_true_string(nvps['exec'])
         result = ExecSync.exec(content[1])
         unless result?.code is 0
           console.error("WARNING: Error occurred running command \"#{content[1]}\".",result)
@@ -113,7 +113,7 @@ class CodeBlockProcessor extends PandocFilter
         unless result?.code is 0
           console.error("WARNING: Error occurred running command \"#{nvps['output-cmd']}\".",result)
       # given display=none, hide the code block after processing
-      if nvps['display']? and nvps['display'].toUpperCase() in ['NONE','HIDDEN','HIDE','NO','N','FALSE','F',0,'0','OFF']
+      if @is_false_string(nvps['display'])
         return []
       else
         for key in DELETE_THESE
