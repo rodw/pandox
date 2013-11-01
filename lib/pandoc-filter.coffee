@@ -1,5 +1,3 @@
-traverse = require 'traverse'
-
 class PandocFilter
 
   execute:(tree,format,meta)=>

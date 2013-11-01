@@ -16,7 +16,6 @@
   },
   "scripts": { "test": "make test" },
   "dependencies": {
-    "traverse": "latest",
     "execSync": "latest",
     "temp": "latest"
   },
