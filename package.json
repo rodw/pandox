@@ -1,8 +1,8 @@
 {
   "name": "pandox",
   "description": "Rod's extensions for Pandoc, the universal document converter.",
-  "keywords": ["Pandoc","Markdown","Filter","Latex"],
-  "version": "0.0.1",
+  "keywords": ["Pandoc","filter","pandocfilters","pandoc scripting","markdown","ast","json"],
+  "version": "0.0.2",
   "license": "MIT",
   "author": "Rod Waldhoff <the-letter-r-followed-by-my-last-name@gmail.com> http://heyrod.com/",
   "contributors": [ ],
