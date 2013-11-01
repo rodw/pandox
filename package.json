@@ -16,6 +16,8 @@
   },
   "scripts": { "test": "make test" },
   "dependencies": {
+    "optimist": "latest",
+    "argf": "latest",
     "execSync": "latest",
     "temp": "latest"
   },

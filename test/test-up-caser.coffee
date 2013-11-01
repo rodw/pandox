@@ -4,8 +4,8 @@ path           = require 'path'
 HOMEDIR        = path.join(__dirname,'..')
 LIB_COV        = path.join(HOMEDIR,'lib-cov')
 LIB_DIR        = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'lib')
-StringCombiner = require(path.join(LIB_DIR,'string-combiner')).StringCombiner
-UpCaser        = require(path.join(LIB_DIR,'up-caser')).UpCaser
+StringCombiner = require(path.join(LIB_DIR,'string-combiner'))
+UpCaser        = require(path.join(LIB_DIR,'up-caser'))
 
 DATA_DIR       = path.join(HOMEDIR,'test','data')
 

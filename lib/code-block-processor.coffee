@@ -3,7 +3,7 @@ path         = require 'path'
 HOMEDIR      = path.join(__dirname,'..')
 LIB_COV      = path.join(HOMEDIR,'lib-cov')
 LIB_DIR      = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'lib')
-PandocFilter = require(path.join(LIB_DIR,'pandoc-filter')).PandocFilter
+PandocFilter = require(path.join(LIB_DIR,'pandoc-filter'))
 ExecSync     = require('execSync')
 temp         = require('temp'); temp.track()
 IS_WINDOWS   = require('os').platform().indexOf('win') is 0
@@ -73,8 +73,7 @@ class CodeBlockProcessor extends PandocFilter
     else
       return null
 
-exports = exports ? this
-exports.CodeBlockProcessor = CodeBlockProcessor
+exports = module.exports = CodeBlockProcessor
 
 if require.main is module
   (new CodeBlockProcessor()).main()

@@ -4,7 +4,7 @@ path         = require 'path'
 HOMEDIR      = path.join(__dirname,'..')
 LIB_COV      = path.join(HOMEDIR,'lib-cov')
 LIB_DIR      = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'lib')
-CodeBlockProcessor = require(path.join(LIB_DIR,'code-block-processor')).CodeBlockProcessor
+CodeBlockProcessor = require(path.join(LIB_DIR,'code-block-processor'))
 
 
 DATA_DIR     = path.join(HOMEDIR,'test','data')

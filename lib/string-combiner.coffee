@@ -3,7 +3,7 @@ path         = require 'path'
 HOMEDIR      = path.join(__dirname,'..')
 LIB_COV      = path.join(HOMEDIR,'lib-cov')
 LIB_DIR      = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'lib')
-PandocFilter = require(path.join(LIB_DIR,'pandoc-filter')).PandocFilter
+PandocFilter = require(path.join(LIB_DIR,'pandoc-filter'))
 
 class StringCombiner extends PandocFilter
   action:(type,content,format,meta)=>
@@ -32,8 +32,7 @@ class StringCombiner extends PandocFilter
     else
       return null
 
-exports = exports ? this
-exports.StringCombiner = StringCombiner
+exports = module.exports = StringCombiner
 
 if require.main is module
   (new StringCombiner()).main()
