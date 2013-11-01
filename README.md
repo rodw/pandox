@@ -87,13 +87,13 @@ By default, Pandoc's AST treats each (whitespace-delimited) word as an indepdent
 is represented in the AST as three separate blocks:
 
 ```js
-[ { t:'Str',c:'Hello' }, { t:'Space',c:[] }, { t:'Str',c:'World. } ]
+[ { t:'Str',c:'Hello' }, { t:'Space',c:[] }, { t:'Str',c:'World.' } ]
 ```
 
 The `StringCombiner` filter will collapse these sequences of strings and spaces into a single (multi-word) string:
 
 ```js
-[ { t:'Str',c:'Hello World. } ]
+[ { t:'Str',c:'Hello World.' } ]
 ```
 
 Usage example:
