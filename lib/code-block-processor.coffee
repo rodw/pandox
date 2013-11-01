@@ -10,6 +10,56 @@ IS_WINDOWS   = require('os').platform().indexOf('win') is 0
 
 class CodeBlockProcessor extends PandocFilter
 
+  get_description:()->
+    """
+    Performs actions based on attributes specified in fenced code blocks.
+
+      input-file  - replaces the body of the code block with the contents
+                    of the specified file.
+      input-cmd   - replaces the body of the code block with the output
+                    of the specified command.
+      exec        - when `true`, executes the body of the code block.
+      output-file - writes the body of the code block to the specified file.
+      output-cmd  - pipes the body of the code block as stdin to the
+                    specified command.
+      display     - when `false`, `none` or 'hide', removes the code
+                    block from the output (sometimes useful with `exec`).
+    """
+
+  after_help:()->
+    message = """
+
+    Markup Examples:
+
+      ``` {#theid .class1 .class2 input-file=SOME_FILE}
+        Whatever you put here will be replaced by
+        the contents of SOME_FILE.
+      ```
+
+      ``` {#theid .class2 input-cmd="uname -a"}
+        Whatever you put here will be replaced by
+        the output of `uname -a`.
+      ```
+
+      ``` {#theid .class2 output-cmd="wc"}
+        Whatever you put here will be provided
+        as input to `wc`.
+      ```
+
+      ``` {exec="true" display="false"}
+        uptime | awk '{ print $6,$7,$8,$9,$10 }' > tempfile.txt
+      ```
+
+      ``` {input-file="tempfile.txt"}
+        Whatever you put here will be replaced by
+        the contents of `tempfile.txt`, created
+        by the code block above.
+      ```
+
+    """
+    console.log message
+    super()
+
   write_to_temp_file: (data)=>
     temp_file = temp.path({suffix: '.pandox'})
     fs.writeFileSync(temp_file,data)

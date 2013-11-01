@@ -6,6 +6,9 @@ LIB_DIR      = if fs.existsSync(LIB_COV) then LIB_COV else path.join(HOMEDIR,'li
 PandocFilter = require(path.join(LIB_DIR,'pandoc-filter'))
 
 class StringCombiner extends PandocFilter
+
+  get_description:()->"Collapses each sequence of strings and spaces into a single string."
+
   action:(type,content,format,meta)=>
     if Array.isArray(content)
       new_array = []

@@ -102,12 +102,20 @@ class PandocFilter
   on_help:()->
     console.log("")
     optimist.showHelp()
+    description = @get_description()
+    if description?
+      console.log(description)
+      console.log("")
     console.log("Examples:")
     cmd = "#{process.argv[0]} #{path.basename(process.argv[1])}"
     console.log("  pandoc -t json FILE.md | #{cmd}")
     console.log("  pandoc -t json FILE.md > FILE.json && #{cmd} FILE.json")
     console.log("")
-    process.exit(0)
+    @after_help()
+
+  get_description:()->null
+
+  after_help:()->process.exit(0)
 
   main:()=>
     @init_options() unless @options?
