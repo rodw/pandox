@@ -62,11 +62,49 @@ var filter = new PandocFilter(upcase);
 
 Several examples can be found in the `./lib` directory.
 
+See the comments in `./lib/pandoc-filter.coffee` (or `./lib/pandoc-filter.js`) for a detailed explanation of the API.
+
 ### The Extensions
+
+#### UpCaser
+
+The `UpCaser` filter is a trivial extension primarily intended to serve as an example.
+
+It will convert any string values to upper case, but ignores code blocks, urls, and other special cases.
+
+Usage exmample:
+
+```console
+> pandoc -t json README.md | pandox-up-caser | pandoc -f json -t html
+```
+
+#### StringCombiner
+
+By default, Pandoc's AST treats each (whitespace-delimited) word as an indepdent block.  For instance, the string:
+
+    Hello World.
+
+is represented in the AST as three separate blocks:
+
+```js
+[ { t:'Str',c:'Hello' }, { t:'Space',c:[] }, { t:'Str',c:'World. } ]
+```
+
+The `StringCombiner` filter will collapse these sequences of strings and spaces into a single (multi-word) string:
+
+```js
+[ { t:'Str',c:'Hello World. } ]
+```
+
+Usage exmample:
+
+```console
+> pandoc -t json MY-FILE.md | pandox-string-combiner | pandoc -f json -t html
+```
 
 #### CodeBlockProcessor
 
-The `CodeBlockProcessor` extension adds several capabilities to the way in which *Pandoc* handles "fenced code blocks", such as:
+The `CodeBlockProcessor` filter adds several capabilities to the way in which *Pandoc* handles "fenced code blocks", such as:
 
     ```
     This is a sample of text inside a "fenced" code block.
@@ -97,6 +135,12 @@ where:
   * `output-file` - writes the body of the code block to the specified file.
 
   * `output-cmd` - pipes the body of the code block to the specified command.
+
+Usage exmample:
+
+```console
+> pandoc -t json MY-FILE.md | pandox-code-block-processor | pandoc -f json -t html
+```
 
 ## License
 
