@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-(new (require(require('path').join(__dirname,'..','lib','up-caser')).UpCaser)()).main();
+(new (require(require('path').join(__dirname,'..','lib','up-caser')))()).main();
