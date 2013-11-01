@@ -11,7 +11,7 @@
 The *Pandox* extensions are typically invoked by piping a JSON-formatted AST (generated via `pandoc -t json FILENAME`) in as stdin, and piping the transformed JSON-formatted AST to another pandoc invocation for rendering.  For example:
 
 ```console
-pandoc -t json README.md | coffee lib/up-caser.coffee | pandoc -f json -t html
+> pandoc -t json README.md | coffee lib/up-caser.coffee | pandoc -f json -t html
 ```
 
 will generate an HTML version of the `README.md` file, first applying the filter defined in `up-caser`.
@@ -19,32 +19,48 @@ will generate an HTML version of the `README.md` file, first applying the filter
 The npm module includes directly executable scripts for each extension.  Hence:
 
 ```console
-pandoc -t json README.md | pandox-up-caser | pandoc -f json -t html
+> pandoc -t json README.md | pandox-up-caser | pandoc -f json -t html
 ```
 
 also works (following `npm install -g pandox`).
 
+Use the `--help` or `-h` command line parameter for more information:
+
+```console
+> node lib/pandoc-filter.js --help
+
+Usage: node lib/pandoc-filter.js [OPTIONS] [FILE]
+
+Options:
+  -h, --help    Show this help message.
+  -f, --filter  A filter to apply before this one. May be repeated.
+
+Examples:
+  pandoc -t json FILE.md | node lib/pandoc-filter.js
+  pandoc -t json FILE.md > FILE.json && node lib/pandoc-filter.js FILE.json
+```
+
 #### The API (Code-Level) Interface
 
-*Pandox* processes the JSON-format abstact-syntax tree that *pandoc* can generate when given the `-t json` flag. Internally, this is quite similiar to (but not *exactly* the same as) the [*Pandoc* filters API](http://johnmacfarlane.net/pandoc/scripting.html) that exists for Haskell and Python.
+*Pandox* processes the JSON-format abstact-syntax tree that *pandoc* can generate when given the `-t json` flag. The internal API is (intended to be) the same the [*Pandoc* filters API](http://johnmacfarlane.net/pandoc/scripting.html) that exists for Haskell and Python.
 
 If you'd like to try your hand at writing custom JavaScript-based *Pandoc* filters, simply extend the `PandocFilter` class or supply a filtering method. For example:
 
 ```js
-var PandocFilter = require('pandoc-filter').PandocFilter
+var PandocFilter = require('pandoc-filter');
 
-function upcase(key,value) {
-  if(key==='Str') {
-    return value.toUpperCase();
+function upcase(type,content) {
+  if(type==='Str') {
+    return { t:type, c:content.toUpperCase();
   } else {
-    return value;
+    return null;
   }
 }
 
 var filter = new PandocFilter(upcase);
 ```
 
-***HOWEVER*** one should not consider the API fully stable or settled just yet, so some of the semantics might change in future releases.  We follow the [semver version numbering conventions](http://semver.org/) so it should be easy to tell when a breaking change is introduced, but the `PandocFilter` API will probably change moderately frequently until we're more satisified with it.
+Several examples can be found in the `./lib` directory.
 
 ### The Extensions
 
@@ -74,10 +90,14 @@ where:
 
   * `input-file` - replaces the body of the code block with the contents of the specified file.
 
-  * `input-cmd` - replaces the body of the code block with output of the specified command..
+  * `input-cmd` - replaces the body of the code block with output of the specified command.
 
   * `exec` - executes the body of the code block as it were a shell script
 
   * `output-file` - writes the body of the code block to the specified file.
 
   * `output-cmd` - pipes the body of the code block to the specified command.
+
+## License
+
+*Pandox* is made availble under an MIT-license. See `license.txt` for details.
